@@ -66,7 +66,11 @@ function viewDepartements() {
 
 function viewemployees() {
   console.log("fonctions to display employees");
-  let q = "SELECT* FROM employee";
+  let q =`SELECT EM.id, EM.last_name ,EM.first_name,EM.manager_id ,R.title Role
+  FROM employee AS EM 
+  LEFT JOIN role AS R
+  ON R.id = EM.role_id
+  `;
   connection.query(q, function(err, rep) {
     if (err) throw err;
     console.log("-----List of employees-----");
@@ -88,20 +92,20 @@ function viewroles() {
   firstPrompt();
 }
 
-function viewEmployee() {
-  inquirer
-    .prompt({
-      name: "viewEmployee",
-      type: "input",
-      message: "Which employee would you like to search for?"
-    })
-    .then(function(response) {
-      console.log(response);
-      if (response.task == "viewEmployee") {
-        viewEmployee();
-      }
-    });
-}
+// function viewEmployee() {
+//   inquirer
+//     .prompt({
+//       name: "viewEmployee",
+//       type: "input",
+//       message: "Which employee would you like to search for?"
+//     })
+//     .then(function(response) {
+//       console.log(response);
+//       if (response.task == "viewEmployee") {
+//         viewEmployee();
+//       }
+//     });
+// }
 
 function ViewManager() {}
 
