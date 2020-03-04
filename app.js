@@ -50,7 +50,7 @@
         ]
       })
       .then(function(response) {
-        console.log(response);
+        // console.log(response);
         if (response.task == "View employees") {
           ViewEmployees();
         }else if (response.task == "View departments") {
@@ -93,7 +93,7 @@
   }
 
   function ViewEmployees() {
-    console.log("fonctions to display employees");
+    // console.log("fonctions to display employees");
     let q =`SELECT
                 EM.id,
                 EM.first_name,
