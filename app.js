@@ -1,8 +1,5 @@
   const mysql = require("mysql");
   const inquirer = require("inquirer");
-
-
-
   const CFonts = require('cfonts');
   
   CFonts.say('Employee|Manager!', {
@@ -43,53 +40,59 @@
         message: "what would you like to do?",
         choices: [
           "View employees",
-          "View departements",
+          "View departments",
           "View roles",
-          "Add departements",
-          "Add roles",
-          "Add employees",
-          "DELETE employees",
+          "Add department",
+          "Add role",
+          "Add employee",
+          "Delete employee",
           "Exit"
         ]
       })
       .then(function(response) {
         console.log(response);
         if (response.task == "View employees") {
-          viewemployees();
-        }
-        if (response.task == "View departements") {
-          viewDepartements();
+          ViewEmployees();
+        }else if (response.task == "View departments") {
+          ViewDepartments();
         } else if (response.task == "View roles") {
-          viewroles();
+          ViewRoles();
         } else if (response.task == "Exit") {
-          connection.end();
-        } else if (response.task == "Add departements") {
-          addepartements();
-        } else if (response.task == "Add roles") {
-          addroles();
-        } else if (response.task == "Add employees") {
+          Exit();
+        } else if (response.task == "Add department") {
+          AddDepartment();
+        } else if (response.task == "Add role") {
+        AddRole();
+        } else if (response.task == "Add employee") {
           //  addemployees();
-          addEmployeeTwo();
-        } else if (response.task == "DELETE employees") {
+          AddEmployeeTwo();
+        } else if (response.task == "Delete employee") {
           // addemployees();
-          deleteEmployer();
+          DeleteEmployee();
         }
       });
   }
 
-  function viewDepartements() {
+  function Exit(){
+    console.log("About to exit.");
+    process.exit(0);
+    connection.end();
+  }
+
+  function ViewDepartments() {
     console.log("fonctions to display departements");
     let q = "SELECT* FROM departement";
     connection.query(q, function(err, rep) {
       if (err) throw err;
-      console.log("-----List of departements-----");
+      // console.log("-----List of departements-----");
+      console.log("\n");
       console.table(rep);
     });
 
     firstPrompt();
   }
 
-  function viewemployees() {
+  function ViewEmployees() {
     console.log("fonctions to display employees");
     let q =`SELECT EM.id, EM.last_name ,EM.first_name,EM.manager_id ,R.title Role
     FROM employee AS EM 
@@ -98,43 +101,30 @@
     `;
     connection.query(q, function(err, rep) {
       if (err) throw err;
-      console.log("-----List of employees-----");
+      // console.log("-----List of employees-----");
+      console.log("\n");
       console.table(rep);
     });
 
     firstPrompt();
   }
 
-  function viewroles() {
+  function ViewRoles() {
     console.log("fonctions to display roles");
     let q = "SELECT* FROM role";
     connection.query(q, function(err, rep) {
       if (err) throw err;
-      console.log("-----List of roles-----");
+      // console.log("-----List of roles-----");
+      console.log("\n");
       console.table(rep);
     });
 
     firstPrompt();
   }
 
-  // function viewEmployee() {
-  //   inquirer
-  //     .prompt({
-  //       name: "viewEmployee",
-  //       type: "input",
-  //       message: "Which employee would you like to search for?"
-  //     })
-  //     .then(function(response) {
-  //       console.log(response);
-  //       if (response.task == "viewEmployee") {
-  //         viewEmployee();
-  //       }
-  //     });
-  // }
-
   function ViewManager() {}
 
-  function addepartements() {
+  function AddDepartment() {
     inquirer
       .prompt({
         type: "input",
@@ -143,16 +133,18 @@
       })
       .then(function(response) {
         var q = "INSERT INTO departement SET ?";
+        console.log(response.name);
+
         connection.query(q, { name: response.name }, function(err, res) {
           if (err) throw err;
-          viewDepartements();
+          ViewDepartments();
           console.log("Insertion of departement");
           firstPrompt();
         });
       });
   }
   //title, salary, departement_id
-  function addroles() {
+  function AddRole() {
     inquirer
       .prompt([
         {
@@ -182,16 +174,15 @@
           },
           function(err, res) {
             if (err) throw err;
-            viewroles();
+            ViewRoles();
             console.log("Insert role");
             firstPrompt();
           }
         );
       });
   }
-
   // first_name, last_name, role_id, manage_id
-  function addemployees() {
+  function AddEmployee() {
     inquirer
       .prompt([
         {
@@ -230,30 +221,26 @@
           },
           function(err, res) {
             if (err) throw err;
-            viewemployees();
+            ViewEmployees();
             console.log("Insert employee");
             firstPrompt();
           }
         );
       });
   }
-
-  function addEmployeeTwo(){
+  function AddEmployeeTwo(){
     console.log("insertation employee")
     var q = `SELECT * FROM role`;
     connection.query(q, function(err, res){
       if(err)throw err;
       const roleChoice = res.map(function(result){
-        return  result.id 
-      })
-
-      console.log(roleChoice)
+        return result.id 
+      });
+      // console.log(roleChoice)
       promptInsertEmployee(roleChoice)
     })
-
   }
   function promptInsertEmployee(roleChoice){
-
     inquirer
       .prompt([
         {
@@ -293,34 +280,15 @@
           },
           function(err, res) {
             if (err) throw err;
-            viewemployees();
+            ViewEmployees();
             console.log("Insert employee");
             firstPrompt();
           }
         );
       });
   }
-
-  function addEmployeeTwo(){
-    console.log("insertation employee")
-    var q = `SELECT * FROM role`;
-    connection.query(q, function(err, res){
-      if(err)throw err;
-      const roleChoice = res.map(function(result){
-        return{value: result.id, title: `${result.title},${result.salary}`}
-      })
-
-      console.log(roleChoice)
-      promptInsertEmployee(roleChoice)
-    })
-  }
-
-
-
-  function deleteEmployer() {
-    
+  function DeleteEmployee() {    
     console.log("Deleting an employee");
-
     var query =
       `SELECT e.id, e.first_name, e.last_name
         FROM employee e`
@@ -331,18 +299,13 @@
       const deleteEmployeeChoices = res.map(({ id, first_name, last_name }) => ({
         value: id, title: `${id} ${first_name} ${last_name}`
       }));
-
       console.table(res);
       console.log("ArrayToDelete!\n");
-
       promptDelete(deleteEmployeeChoices);
     });
   }
-
   // User choose the employee list, then employee is deleted
-
   function promptDelete(deleteEmployeeChoices) {
-
     inquirer
       .prompt([
         {
