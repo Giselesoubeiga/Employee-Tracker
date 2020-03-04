@@ -94,10 +94,18 @@
 
   function ViewEmployees() {
     console.log("fonctions to display employees");
-    let q =`SELECT EM.id, EM.last_name ,EM.first_name,EM.manager_id ,R.title Role
-    FROM employee AS EM 
-    LEFT JOIN role AS R
-    ON R.id = EM.role_id
+    let q =`SELECT
+                EM.id,
+                EM.first_name,
+                EM.last_name,
+                EM.manager_id,
+                R.title Role,
+                CONCAT(EM.last_name, " ", EM.first_name) AS ManagerName
+            FROM
+                employee AS EM
+            LEFT JOIN role AS R
+            ON
+            R.id = EM.role_id
     `;
     connection.query(q, function(err, rep) {
       if (err) throw err;
