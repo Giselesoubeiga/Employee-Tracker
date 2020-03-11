@@ -13,4 +13,10 @@ JavaScript, SQL, MySql, Node.js
 
 # Screenshot
 
+![alt text](assets/images/schema.png)
+![alt text](assets/images/Capture.PNG)
+![alt text](assets/images/Capture1.PNG)
+![alt text](assets/images/Capture2.PNG)
+
+
 
