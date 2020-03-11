@@ -366,14 +366,21 @@ function UpdateEmployeeRole() {
               result.department_id = res2[i].id;
           }
       }
-      var query = "UPDATE role SET  department_id = ? , salary = ? WHERE id = ? "
+
+      for (var i = 0; i < res.length; i++) {
+        if (res[i].title === result.role_id) {
+            result.role_id = res[i].id;
+        }
+    }
+      var query = `UPDATE role SET  department_id = ? , salary = ? WHERE id = ? `
       const VALUES = 
           [
             result.department_id,
-            result.role_id,
-             result.salary
+            result.salary,
+            result.role_id
+            
           ]
-      
+      console.log(VALUES,query)
       connection.query(query, VALUES, function (err) {
           if (err) throw err;
           console.table("Role Successfuly created!");
