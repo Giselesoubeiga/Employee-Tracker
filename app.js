@@ -82,7 +82,7 @@ function Exit() {
 }
 
 function ViewDepartments() {
-  console.log("fonctions to display departements");
+  // console.log("fonctions to display departements");
   let q = "SELECT* FROM departement";
   connection.query(q, function(err, rep) {
     if (err) throw err;

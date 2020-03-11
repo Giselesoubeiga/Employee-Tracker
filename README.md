@@ -8,5 +8,9 @@ Add departments, roles, employees,
 View departments, roles, employees
 Update employee roles
 
-Key words : SQL, MySql, Node.js
+# Technologies-Libraries
+JavaScript, SQL, MySql, Node.js
+
+# Screenshot
+
 
